@@ -1,5 +1,13 @@
 package edu.kyndryl.academy.msalumnosprofe.model;
 
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 /*
 /**
  *  comentario de código
@@ -9,23 +17,53 @@ package edu.kyndryl.academy.msalumnosprofe.model;
 
 /**
  * esta clase, representa a un alumno con sus datos
- * DTO- Data Transfer/Type Object - Bean
+ * DTO- Data Transfer/Type Object - Bean - POJO 
+ * Java Bean (Plain Old Java Object) - atributos, métodos de acceso y constructor por defecto
+ * Spring Bean - clase que gestiona / instancia Spring automáticamente
+ * DTO - DAO AlumnoDTO - BEAN clase pelada
+ * Data Access Object - AlumnoDAO - ALumno en su relación con la base de datos
+ * JPA - Entity	
+ * 1) decimos a Spring que esto es una tabla -- Identificamos como Entity
  * 
  */
+
+@Entity //le digo a Spring que esta clase está asociada a una tabla
+@Table(name = "alumnos") //el nombre de la tabla en bd a la que está asociada esta clase
 public class Alumno {
 	
 	//comentario de línea
 	/*
 	 * comentario de bloque
 	 */
+	@Id //le digo que este atributo es la PK 
+	@GeneratedValue(strategy = GenerationType.IDENTITY) //configuramos el autoincremento MYSQL
+	private Long id;//clave primaria
 	
 	private String nombre;
 	private int edad;
 	private String apellido;
 	private String email;
 	
+	private LocalDateTime creadoEn;
 	
 	
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public LocalDateTime getCreadoEn() {
+		return creadoEn;
+	}
+
+	public void setCreadoEn(LocalDateTime creadoEn) {
+		this.creadoEn = creadoEn;
+	}
+
 	//constructor por defecto
 	public Alumno() {
 		// TODO Auto-generated constructor stub
@@ -38,6 +76,16 @@ public class Alumno {
 		this.edad = edad;
 		this.apellido = apellido;
 		this.email = email;
+	}
+	
+	public Alumno(Long id, String nombre, int edad, String apellido, String email, LocalDateTime creadoEn) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.edad = edad;
+		this.apellido = apellido;
+		this.email = email;
+		this.creadoEn = creadoEn;
 	}
 
 	//métodos de acceso

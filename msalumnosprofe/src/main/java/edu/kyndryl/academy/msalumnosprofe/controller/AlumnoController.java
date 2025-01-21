@@ -38,7 +38,7 @@ public class AlumnoController {
 		
 			alumno = new Alumno("Laura", 60, "Gómez", "laura@kyndryl.com");
 		
-		return alumno;
+		return alumno;//SERIALIZA Objeto de Java - A String JSON
 	}
 
 }

@@ -2,10 +2,13 @@ package edu.kyndryl.academy.msalumnosprofe.model;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 /*
@@ -44,9 +47,14 @@ public class Alumno {
 	private String apellido;
 	private String email;
 	
+	@JsonIgnore //evitando serializar este atributo a JSON
 	private LocalDateTime creadoEn;
 	
-	
+	@PrePersist //esta anotación hace que Spring llame a este método antes de insertar un nuevo alumno
+	private void generarFechaCreacion ()
+	{
+		this.creadoEn = LocalDateTime.now(); //obtengo la fecha actual y se la asigno al alumno
+	}
 
 	public Long getId() {
 		return id;

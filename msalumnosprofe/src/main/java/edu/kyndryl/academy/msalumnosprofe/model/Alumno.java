@@ -128,6 +128,12 @@ public class Alumno {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	@Override
+	public String toString() {
+		return "Alumno [id=" + id + ", nombre=" + this.nombre + ", edad=" + edad + ", apellido=" + apellido + ", email="
+				+ email + ", creadoEn=" + creadoEn + "]";
+	}
 	
 	
 	

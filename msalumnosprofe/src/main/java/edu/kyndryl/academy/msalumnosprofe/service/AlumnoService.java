@@ -20,6 +20,8 @@ public interface AlumnoService {
 	Optional<Alumno> consultarPorId (Long id);
 	//CONSULTA DE TODOS
 	Iterable<Alumno> consultarTodos ();
+	//CONSULTA POR RANGO DE EDAD
+	Iterable<Alumno> buscarAlumnosPorIntervaloDeEdad (int edadmin, int edadmax);
 	
 
 }

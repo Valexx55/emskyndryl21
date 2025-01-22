@@ -10,5 +10,11 @@ import edu.kyndryl.academy.msalumnosprofe.model.Alumno;
  */
 @Repository
 public interface AlumnoRepository extends CrudRepository<Alumno, Long> {
+	
+	//ADEMÁS DE CRUD VAMOS A AÑADIR UNA KEYWORD QUERY
+	
+		//consulta de los alumnos que estén de un rango de EDAD
+	
+			Iterable<Alumno> findByEdadBetween (int edadmin, int edadmax);
 
 }

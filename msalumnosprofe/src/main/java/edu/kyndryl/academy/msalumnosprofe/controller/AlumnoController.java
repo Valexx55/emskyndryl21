@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import edu.kyndryl.academy.msalumnosprofe.model.Alumno;
 import edu.kyndryl.academy.msalumnosprofe.service.AlumnoService;
@@ -159,6 +160,25 @@ public class AlumnoController {
 		}
 		
 		
+		return responseEntity;
+	}
+	
+	
+	@GetMapping("/listarAlumnosPorRangoEdad") //GET localhost:8081/alumno?edadmin=10&edadmax=20 
+	public ResponseEntity<Iterable<Alumno>> listarAlumnosPorRangoEdad(
+			@RequestParam(name = "edadmin", required = true) int edadmin,
+			@RequestParam(name = "edadmax", required = true) int edadmax
+			)
+	{
+		ResponseEntity<Iterable<Alumno>> responseEntity = null;
+		
+		
+			logger.debug("EN listarAlumnosPorRangoEdad()");
+			Iterable<Alumno> listadoAlumnos = alumnoService.buscarAlumnosPorIntervaloDeEdad(edadmin, edadmax);
+			responseEntity = ResponseEntity.ok(listadoAlumnos);
+			logger.debug("listado alumnos " + listadoAlumnos);
+			
+			
 		return responseEntity;
 	}
 	

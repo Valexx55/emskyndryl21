@@ -75,4 +75,11 @@ public class AlumnoServiceImp implements AlumnoService {
 		return this.alumnoRepository.findAll();
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public Iterable<Alumno> buscarAlumnosPorIntervaloDeEdad(int edadmin, int edadmax) {
+		
+		return this.alumnoRepository.findByEdadBetween(edadmin, edadmax);
+	}
+
 }

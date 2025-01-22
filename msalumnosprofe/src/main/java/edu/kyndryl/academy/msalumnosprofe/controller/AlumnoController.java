@@ -1,11 +1,10 @@
 package edu.kyndryl.academy.msalumnosprofe.controller;
 
-import java.util.List;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,9 +13,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-//import org.springframework.web.bind.annotation.GetMapping;
-
 import edu.kyndryl.academy.msalumnosprofe.model.Alumno;
 
 
@@ -50,6 +46,7 @@ public class AlumnoController {
 	public Alumno obtenerAlumnoTest () {
 		Alumno alumno = null;
 		
+			//alumno.getApellido();
 			logger.debug("Entrando en obtenerAlumnoTest");
 			alumno = new Alumno("Laura", 60, "Gómez", "laura@kyndryl.com");
 			logger.debug("Alumno " + alumno.toString());
@@ -88,7 +85,7 @@ public class AlumnoController {
 	}
 	
 	 //* BAJA - DELETE
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/{id}") //DELETE localhost:8081/alumno
 	public ResponseEntity<Void> borrarAlumnoPorId(@PathVariable  Long id)
 	{
 		ResponseEntity<Void> responseEntity = null;
@@ -97,7 +94,7 @@ public class AlumnoController {
 	}
 	
 	//POST - INSERTAR
-	@PostMapping //GET localhost:8081/alumno
+	@PostMapping //POST localhost:8081/alumno
 	public ResponseEntity<Alumno> insertarAlumno(@RequestBody Alumno alumno)
 	{
 		ResponseEntity<Alumno> responseEntity = null;

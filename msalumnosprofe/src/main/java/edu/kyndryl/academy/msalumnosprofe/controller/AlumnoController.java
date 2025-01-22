@@ -53,11 +53,12 @@ public class AlumnoController {
 	public Alumno obtenerAlumnoTest () {
 		Alumno alumno = null;
 		
-			//alumno.getApellido();
+			//alumno.getApellido(); //nullPointer
 			logger.debug("Entrando en obtenerAlumnoTest");
 			alumno = new Alumno("Laura", 60, "Gómez", "laura@kyndryl.com");
 			logger.debug("Alumno " + alumno.toString());
 			logger.debug("Final obtenerAlumnoTest");
+			alumno.getNombre().charAt(5);
 			//TODO COMENTAR TOSTRING EN ENTITADES Y BEANS LOG
 		
 		return alumno;//SERIALIZA Objeto de Java - A String JSON

@@ -63,14 +63,14 @@ public class AlumnoServiceImp implements AlumnoService {
 	}
 
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public Optional<Alumno> consultarPorId(Long id) {
 		
 		return this.alumnoRepository.findById(id);
 	}
 
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public Iterable<Alumno> consultarTodos() {
 		return this.alumnoRepository.findAll();
 	}

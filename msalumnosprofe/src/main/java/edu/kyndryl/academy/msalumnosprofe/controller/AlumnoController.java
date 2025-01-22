@@ -2,8 +2,12 @@ package edu.kyndryl.academy.msalumnosprofe.controller;
 
 
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import edu.kyndryl.academy.msalumnosprofe.model.Alumno;
+import edu.kyndryl.academy.msalumnosprofe.service.AlumnoService;
 
 
 /**
@@ -37,6 +42,8 @@ import edu.kyndryl.academy.msalumnosprofe.model.Alumno;
 public class AlumnoController {
 	
 	
+	@Autowired
+	AlumnoService alumnoService;
 	
 	Logger logger = LoggerFactory.getLogger(AlumnoController.class);//dame un log para esta clase
 	
@@ -71,6 +78,11 @@ public class AlumnoController {
 	{
 		ResponseEntity<Iterable<Alumno>> responseEntity = null;
 		
+			logger.debug("EN listarAlumnos()");
+			Iterable<Alumno> listadoAlumnos = alumnoService.consultarTodos();
+			responseEntity = ResponseEntity.ok(listadoAlumnos);//genero el mensaje de respuesta en la cabecera ok 200 y en el cuerpo, el listado de alumnos
+			logger.debug("Listado de alumnos " + listadoAlumnos.toString());
+			
 		return responseEntity;
 	}
 	
@@ -80,7 +92,20 @@ public class AlumnoController {
 	public ResponseEntity<Alumno> listarAlumnoPorId(@PathVariable  Long id)
 	{
 		ResponseEntity<Alumno> responseEntity = null;
+		Alumno alumnoLeido = null;
 		
+			logger.debug("EN listarAlumnoPorId()");
+			Optional<Alumno> oAlumno = alumnoService.consultarPorId(id);
+			if (oAlumno.isPresent())
+			{
+				alumnoLeido = oAlumno.get();
+				responseEntity = ResponseEntity.ok(alumnoLeido);
+				logger.debug("Alumno leído " + alumnoLeido);
+			} else {
+				logger.debug("Alumno no encontrado con id " + id);
+				responseEntity = ResponseEntity.noContent().build();
+			}
+			
 		return responseEntity;
 	}
 	
@@ -90,6 +115,11 @@ public class AlumnoController {
 	{
 		ResponseEntity<Void> responseEntity = null;
 		
+			logger.debug("EN borrarAlumnoPorId()");
+			alumnoService.borrarPorId(id);
+			responseEntity = ResponseEntity.ok().build();
+			
+		
 		return responseEntity;
 	}
 	
@@ -98,7 +128,12 @@ public class AlumnoController {
 	public ResponseEntity<Alumno> insertarAlumno(@RequestBody Alumno alumno)
 	{
 		ResponseEntity<Alumno> responseEntity = null;
-				
+		Alumno alumnoInsertado = null;
+		
+			logger.debug("EN insertarAlumno()");
+			alumnoInsertado = alumnoService.alta(alumno);
+			responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(alumnoInsertado);
+			logger.debug("Alumno insertado = " + alumnoInsertado);	
 		
 		return responseEntity;
 	}
@@ -108,7 +143,20 @@ public class AlumnoController {
 	public ResponseEntity<Alumno> modificarAlumno(@RequestBody Alumno alumno, @PathVariable Long id)
 	{
 		ResponseEntity<Alumno> responseEntity = null;
-				
+		Alumno alumnoModificado = null;
+		
+		logger.debug("EN modificarAlumno()");
+		Optional<Alumno> oAlumno = alumnoService.modificarAlumnoPorId(alumno, id);
+		if (oAlumno.isPresent())
+		{
+			alumnoModificado = oAlumno.get();
+			responseEntity = ResponseEntity.ok(alumnoModificado);
+			logger.debug("Alumno leído " + alumnoModificado);
+		} else {
+			logger.debug("Alumno no encontrado con id " + id);
+			responseEntity = ResponseEntity.notFound().build();
+		}
+		
 		
 		return responseEntity;
 	}

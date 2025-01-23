@@ -10,6 +10,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 /*
 /**
@@ -42,9 +47,17 @@ public class Alumno {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //configuramos el autoincremento MYSQL
 	private Long id;//clave primaria
 	
+	@Size(min = 3, max = 20)
 	private String nombre;
+	
+	@Min(10)
+	@Max(100)
 	private int edad;
+	
+	@NotEmpty //longitud mayor que uno
 	private String apellido;
+	
+	@Email
 	private String email;
 	
 	@JsonIgnore //evitando serializar este atributo a JSON

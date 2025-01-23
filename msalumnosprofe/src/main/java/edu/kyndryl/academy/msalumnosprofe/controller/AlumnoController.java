@@ -2,6 +2,7 @@ package edu.kyndryl.academy.msalumnosprofe.controller;
 
 
 
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -9,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.kyndryl.academy.msalumnosprofe.model.Alumno;
 import edu.kyndryl.academy.msalumnosprofe.service.AlumnoService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 
 
 /**
@@ -127,17 +131,41 @@ public class AlumnoController {
 		return responseEntity;
 	}
 	
+	private ResponseEntity<?> obtenerErrores(BindingResult br) {
+		ResponseEntity<?> responseEntity = null;
+
+		logger.debug("El alumno trae fallos");
+		List<ObjectError> listaErrores = br.getAllErrors();
+		listaErrores.forEach((ObjectError error) -> // esta función en realidad es accept
+		{
+			logger.error(error.toString());
+		});
+		
+		responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(listaErrores);
+		return responseEntity;
+	}
+	
 	//POST - INSERTAR
 	@PostMapping //POST localhost:8081/alumno
-	public ResponseEntity<Alumno> insertarAlumno(@RequestBody Alumno alumno)
+	public ResponseEntity<?> insertarAlumno(@Valid @RequestBody Alumno alumno, BindingResult br)
 	{
-		ResponseEntity<Alumno> responseEntity = null;
+		ResponseEntity<?> responseEntity = null;
 		Alumno alumnoInsertado = null;
 		
+			
 			logger.debug("EN insertarAlumno()");
-			alumnoInsertado = alumnoService.alta(alumno);
-			responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(alumnoInsertado);
-			logger.debug("Alumno insertado = " + alumnoInsertado);	
+			if (br.hasErrors())
+			{
+				logger.debug("Error en los datos de entrada");
+				responseEntity = obtenerErrores(br);
+			} else {
+				
+				logger.debug("Validación OK");
+				alumnoInsertado = alumnoService.alta(alumno);
+				responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(alumnoInsertado);
+				logger.debug("Alumno insertado = " + alumnoInsertado);
+			
+			}
 		
 		return responseEntity;
 	}

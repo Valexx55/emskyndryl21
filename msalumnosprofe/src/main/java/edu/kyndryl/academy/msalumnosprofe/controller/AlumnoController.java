@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import edu.kyndryl.academy.msalumnosprofe.model.Alumno;
 import edu.kyndryl.academy.msalumnosprofe.service.AlumnoService;
+import io.swagger.v3.oas.annotations.Operation;
 
 
 /**
@@ -90,6 +91,7 @@ public class AlumnoController {
 	
 	// * CONSULTA un alumno - GET
 	
+	@Operation(summary = "", description = "Este método, nos recupera un alumno dado un id", tags={ "alumno-controller" })
 	@GetMapping("/{id}") //GET localhost:8081/alumno/5 //@PathVariable carga el valor
 	public ResponseEntity<Alumno> listarAlumnoPorId(@PathVariable  Long id)
 	{

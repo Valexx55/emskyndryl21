@@ -2,12 +2,16 @@ package edu.kyndryl.academy.msalumnosprofe.controller;
 
 
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -51,6 +55,12 @@ public class AlumnoController {
 	@Autowired
 	AlumnoService alumnoService;
 	
+	@Value("${instancia}")
+	String nombre_instancia;
+	
+	@Autowired
+	Environment environment;
+	
 	Logger logger = LoggerFactory.getLogger(AlumnoController.class);//dame un log para esta clase
 	
 	//yo a Spring le digo oye: si recibes un GET localhost:8081/alumno/obtener-alumno-test
@@ -87,6 +97,14 @@ public class AlumnoController {
 		ResponseEntity<Iterable<Alumno>> responseEntity = null;
 		
 			logger.debug("EN listarAlumnos()");
+			logger.debug("Nombre instancia = " + this.nombre_instancia + " PUERTO " + environment.getProperty("local.server.port"));
+			try {
+				logger.debug("HOSTNAME "+ InetAddress.getLocalHost().getHostName());
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			Iterable<Alumno> listadoAlumnos = alumnoService.consultarTodos();
 			responseEntity = ResponseEntity.ok(listadoAlumnos);//genero el mensaje de respuesta en la cabecera ok 200 y en el cuerpo, el listado de alumnos
 			logger.debug("Listado de alumnos " + listadoAlumnos.toString());

@@ -60,7 +60,7 @@ public class Alumno {
 	@Email
 	private String email;
 	
-	@JsonIgnore //evitando serializar este atributo a JSON
+	//@JsonIgnore //evitando serializar este atributo a JSON
 	private LocalDateTime creadoEn;
 	
 	@PrePersist //esta anotación hace que Spring llame a este método antes de insertar un nuevo alumno

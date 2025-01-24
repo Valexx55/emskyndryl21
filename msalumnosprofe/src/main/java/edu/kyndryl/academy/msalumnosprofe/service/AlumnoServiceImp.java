@@ -5,8 +5,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import edu.kyndryl.academy.msalumnosprofe.model.Alumno;
+import edu.kyndryl.academy.msalumnosprofe.model.FraseChiquito;
 import edu.kyndryl.academy.msalumnosprofe.repository.AlumnoRepository;
 
 /**
@@ -80,6 +82,19 @@ public class AlumnoServiceImp implements AlumnoService {
 	public Iterable<Alumno> buscarAlumnosPorIntervaloDeEdad(int edadmin, int edadmax) {
 		
 		return this.alumnoRepository.findByEdadBetween(edadmin, edadmax);
+	}
+
+	@Override
+	public Optional<FraseChiquito> obtenerFraseAleatoria() {
+		Optional<FraseChiquito> oFrase = Optional.empty();
+		RestTemplate restTemplate = null;
+		FraseChiquito fraseChiquito = null;
+		
+			restTemplate = new RestTemplate();
+			fraseChiquito = restTemplate.getForObject("http://chiquitadas.es/api/quotes/avoleorrr", FraseChiquito.class);
+			oFrase = Optional.of(fraseChiquito);
+		
+		return oFrase;
 	}
 
 }

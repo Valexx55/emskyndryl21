@@ -3,6 +3,7 @@ package edu.kyndryl.academy.msalumnosprofe.service;
 import java.util.Optional;
 
 import edu.kyndryl.academy.msalumnosprofe.model.Alumno;
+import edu.kyndryl.academy.msalumnosprofe.model.FraseChiquito;
 
 /**
  * Aquí quedan definidos de manera abstracta (sólo la cabecera de los métodos)
@@ -22,6 +23,8 @@ public interface AlumnoService {
 	Iterable<Alumno> consultarTodos ();
 	//CONSULTA POR RANGO DE EDAD
 	Iterable<Alumno> buscarAlumnosPorIntervaloDeEdad (int edadmin, int edadmax);
+	//OBTENER FRASE CHIQUITO DE OTRO SERVER
+	Optional<FraseChiquito> obtenerFraseAleatoria ();
 	
 
 }

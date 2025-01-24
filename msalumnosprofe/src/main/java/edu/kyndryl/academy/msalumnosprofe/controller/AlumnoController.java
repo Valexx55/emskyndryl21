@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import edu.kyndryl.academy.msalumnosprofe.model.Alumno;
+import edu.kyndryl.academy.msalumnosprofe.model.FraseChiquito;
 import edu.kyndryl.academy.msalumnosprofe.service.AlumnoService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -227,6 +228,28 @@ public class AlumnoController {
 			responseEntity = ResponseEntity.ok(listadoAlumnos);
 			logger.debug("listado alumnos " + listadoAlumnos);
 			
+			
+		return responseEntity;
+	}
+	
+	
+	@GetMapping("/obtenerFraseChiquito") //GET localhost:8081/alumno/obtenerFraseChiquito
+	public ResponseEntity<FraseChiquito> obtenerFraseChiquito()
+	{
+		ResponseEntity<FraseChiquito> responseEntity = null;
+		FraseChiquito fraseChiquito = null;
+		
+			logger.debug("EN obtenerFraseChiquito()");
+			Optional<FraseChiquito> oFrase = alumnoService.obtenerFraseAleatoria();
+			if (oFrase.isPresent())
+			{
+				fraseChiquito = oFrase.get();
+				responseEntity = ResponseEntity.ok(fraseChiquito);
+				logger.debug("Fase obtenida " + fraseChiquito);
+			} else {
+				logger.debug("Frase no recibida ");
+				responseEntity = ResponseEntity.noContent().build();
+			}
 			
 		return responseEntity;
 	}

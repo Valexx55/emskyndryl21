@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -24,7 +25,8 @@ public class AlumnoControllerTest3 {
 	@Autowired
 	private MockMvc mockMvc; // el objeto con el que lanzamos las peticiones HTTP
 	
-	@MockBean
+	//@MockBean deprecado
+	@MockitoBean
 	AlumnoService alumnoService; //es un servicio de mentirijilla--> todo: programar su comportamiento
 
 

@@ -92,7 +92,7 @@ public class AlumnoController {
 	//ResponseEntity<Tipo que va en el cuerpo> es la clase que envuelve/representa el mensaje HTTP de Respuesta
 	
 	@GetMapping("/") //GET localhost:8081/alumno
-	//@GetMapping
+	//@GetMapping	
 	public ResponseEntity<Iterable<Alumno>> listarAlumnos()
 	{
 		ResponseEntity<Iterable<Alumno>> responseEntity = null;

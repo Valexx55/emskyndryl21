@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import com.google.gson.Gson;
+
 import edu.kyndryl.academy.msalumnosprofe.model.Alumno;
 import edu.kyndryl.academy.msalumnosprofe.model.FraseChiquito;
 import edu.kyndryl.academy.msalumnosprofe.repository.AlumnoRepository;
@@ -99,28 +101,22 @@ public class AlumnoServiceImp implements AlumnoService {
 	public Optional<FraseChiquito> obtenerFraseAleatoria() {
 		Optional<FraseChiquito> oFrase = Optional.empty();
 		RestTemplate restTemplate = null;
-		ResponseEntity<FraseChiquito> fraseChiquito = null;
+		FraseChiquito fraseChiquito = null;
+		String frase = null;
 		
 		
-		/*List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();        
-		//Add the Jackson Message converter
-		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-
-		// Note: here we are making this converter to process any kind of response, 
-		// not only application/*json, which is the default behaviour
-		converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));        
-		messageConverters.add(converter);  
-		restTemplate.setMessageConverters(messageConverters); */
 		
-			HttpHeaders headers = new HttpHeaders();
-		    headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-		    HttpEntity<String> entity = new HttpEntity<String>(headers);
 		
 			restTemplate = new RestTemplate();
+			/*ResponseEntity<String> respStr = restTemplate.exchange("http://chiquitadas.es/api/quotes/avoleorrr",HttpMethod.GET, entity,  String.class);  
+			Gson g = new Gson();*/
+			//fraseChiquito = restTemplate.exchange("http://chiquitadas.es/api/quotes/avoleorrr", HttpMethod.GET,entity, FraseChiquito.class);
+			frase = restTemplate.getForObject("http://chiquitadas.es/api/quotes/avoleorrr", String.class);
+			System.out.println("FRASE RX = " + frase);
+			Gson gson = new Gson();
+			fraseChiquito =  gson.fromJson(frase, FraseChiquito.class);
+			oFrase = Optional.of(fraseChiquito);
 			
-			fraseChiquito = restTemplate.exchange("http://chiquitadas.es/api/quotes/avoleorrr", HttpMethod.GET,entity, FraseChiquito.class);
-			//fraseChiquito = restTemplate.getForObject("http://chiquitadas.es/api/quotes/avoleorrr", FraseChiquito.class);
-			oFrase = Optional.of(fraseChiquito.getBody());
 		
 		return oFrase;
 	}

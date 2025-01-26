@@ -13,8 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import edu.kyndryl.academy.msalumnosprofe.model.Alumno;
-import edu.kyndryl.academy.msalumnosprofe.util.UtilTest;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @SpringBootTest
 @AutoConfigureMockMvc // mockeo el servidor
@@ -28,22 +28,30 @@ public class AlumnoControllerTest2 {
 	@Autowired
 	private MockMvc mockMvc; // el objeto con el que lanzamos las peticiones HTTP
 	
+	@Autowired
+	ObjectMapper om;//es para serializar a JSON el alumno
+	
 	
 	@Test
 	public void insertarAlumnoTest() throws Exception {
-		Alumno alumno = new Alumno();
-		alumno.setNombre("Juan");
-		alumno.setApellido("Moreno");
-		alumno.setEdad(22);
-		alumno.setEmail("juanmo@mail.es");
-		alumno.setCreadoEn(LocalDateTime.now());
-
+	
+		
+		ObjectNode objectNode = om.createObjectNode();//nuestro alumno
+		objectNode.put("nombre" , "Nacho");
+		objectNode.put("apellido" , "Moreno");
+		objectNode.put("email" , "nacho@rm.es");
+		objectNode.put("edad" , 15);
+		
 		// serializar este alumno
-		String json_alumno = UtilTest.toJSON(alumno);
+		String alumno_json = objectNode.toString();
 
-		mockMvc.perform(post("/alumno/").contentType(MediaType.APPLICATION_JSON).content(json_alumno))
+
+		mockMvc.perform(post("/alumno/").contentType(MediaType.APPLICATION_JSON).content(alumno_json))
 				.andExpect(status().isCreated()).andExpect(content().contentType("application/json"));
 
 	}
+	
+	
+	
 
 }

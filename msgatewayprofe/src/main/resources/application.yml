@@ -17,7 +17,7 @@ spring:
         predicates:
           - Path=/api/alumnos/**
         filters:
-          - RewritePath=/api/alumnos/*, /alumno/
+          - RewritePath=/api/alumnos*, /alumno
 server:
   port: 9090
 eureka:

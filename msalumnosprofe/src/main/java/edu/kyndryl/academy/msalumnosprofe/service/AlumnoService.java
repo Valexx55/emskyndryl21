@@ -2,8 +2,8 @@ package edu.kyndryl.academy.msalumnosprofe.service;
 
 import java.util.Optional;
 
-import edu.kyndryl.academy.msalumnosprofe.model.Alumno;
 import edu.kyndryl.academy.msalumnosprofe.model.FraseChiquito;
+import edu.kyndryl.academy.mscomunprofe.entity.Alumno;
 
 /**
  * Aquí quedan definidos de manera abstracta (sólo la cabecera de los métodos)

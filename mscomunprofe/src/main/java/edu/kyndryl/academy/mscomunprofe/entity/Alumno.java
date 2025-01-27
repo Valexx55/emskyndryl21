@@ -1,6 +1,7 @@
-package edu.kyndryl.academy.msalumnosprofe.model;
+package edu.kyndryl.academy.mscomunprofe.entity;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -148,7 +149,23 @@ public class Alumno {
 				+ email + ", creadoEn=" + creadoEn + "]";
 	}
 	
-	
+	//el remove usará equasl por detrás
+	@Override
+	public boolean equals(Object obj) {
+		boolean iguales = false;
+		
+			if (this == obj)
+			{
+				iguales = true;
+			} else if (obj instanceof Alumno) //if (obj instanceof Alumno a)//https://docs.oracle.com/en/java/javase/14/language/pattern-matching-instanceof-operator.html
+			{
+				Alumno a = (Alumno)obj;
+				//Objects.equals(this.id, a.id);
+				iguales = ((this.id != null)&&(this.id.equals(a.id)));//Objects.equals(this.id, a.id);
+			}
+		
+		return iguales;
+	}
 	
 	
 	

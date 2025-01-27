@@ -3,7 +3,8 @@ package edu.kyndryl.academy.msalumnosprofe.repository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import edu.kyndryl.academy.msalumnosprofe.model.Alumno;
+import edu.kyndryl.academy.mscomunprofe.entity.Alumno;
+
 
 /**
  * en esta clase, operamos con la base de datos

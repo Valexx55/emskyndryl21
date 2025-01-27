@@ -1,9 +1,13 @@
-package edu.kyndryl.academy.mscursosprofe.model;
+package edu.kyndryl.academy.mscomunprofe.entity;
+
+import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -15,6 +19,9 @@ public class Curso {
 	private Long id;
 	
 	private String nombre;
+	
+	@OneToMany(fetch = FetchType.LAZY) //TODO add tipo de fetch
+	private List<Alumno> alumnos;
 	
 	public Long getId() {
 		return id;
@@ -40,7 +47,24 @@ public class Curso {
 	public Curso() {
 		// TODO Auto-generated constructor stub
 	}
+
+	public List<Alumno> getAlumnos() {
+		return alumnos;
+	}
+
+	public void setAlumnos(List<Alumno> alumnos) {
+		this.alumnos = alumnos;
+	}
 	
+	public void addAlumno (Alumno alumno)
+	{
+		this.alumnos.add(alumno);
+	}
+	
+	public void borrarAlumno (Alumno alumno)
+	{
+		this.alumnos.remove(alumno);
+	}
 
 
 }

@@ -72,6 +72,8 @@ public class CursosController {
 	public ResponseEntity<?> modificarCurso(@RequestBody Curso curso, @PathVariable Long id) {
 		ResponseEntity<?> responseEntity = null;
 		Optional<Curso> o_curso = null;
+		
+				//curso.setNombre("Piton 3");//transient "desconectado de la bd"
 			
 				o_curso = this.cursoService.update(curso, id);
 	

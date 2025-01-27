@@ -2,6 +2,7 @@ package edu.kyndryl.academy.mscursosprofe.service;
 
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,9 +44,33 @@ public class CursoServiceImp implements CursoService {
 
 
 	@Override
+	@Transactional
 	public Optional<Curso> update(Curso curso, Long id) {
-		// TODO IMPLEMENTAR 
-		return Optional.empty();
+		Optional<Curso> opcurso = Optional.empty();
+		
+			//1 leo el curso a modificar por el id
+			opcurso = this.cursoRepository.findById(id);
+			//2 si existe
+			if (opcurso.isPresent())
+			{
+				Curso cursoleido = opcurso.get();
+				//2.1 modifco los datos del curso leido
+				cursoleido.setNombre(curso.getNombre());//actualizo
+				//forma alternativa de actualizar todos los atributos de una clase
+				//en vez de hacer el set uno a uno 
+				//BeanUtils.copyProperties(curso, cursoleido, "nombre");
+				//2.2 guardo
+				//this.cursoRepository.save(cursoleido); //ESTA INSTRUCCIÓN NO ES NECESARIA. SE MODIFICA AUTOMÁTICAMENTE EN BD, POR ESTAR LA ENTIDAD CURSO EN ESTADO "PERSISTENCE"
+				opcurso = Optional.of(cursoleido);//devuelvo el curso modificado
+			} 
+			//3 no existe - no hago nada
+			//else {
+				//no hago nada
+			//}				
+			
+			
+		 
+		return opcurso;
 	}
 
 }

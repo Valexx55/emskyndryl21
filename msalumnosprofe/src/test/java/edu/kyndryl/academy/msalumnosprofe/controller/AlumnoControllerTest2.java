@@ -32,6 +32,7 @@ public class AlumnoControllerTest2 {
 	ObjectMapper om;//es para serializar a JSON el alumno
 	
 	
+	//TEST POST CORRECTO
 	@Test
 	public void insertarAlumnoTest() throws Exception {
 	
@@ -45,11 +46,30 @@ public class AlumnoControllerTest2 {
 		// serializar este alumno
 		String alumno_json = objectNode.toString();
 
-
 		mockMvc.perform(post("/alumno/").contentType(MediaType.APPLICATION_JSON).content(alumno_json))
 				.andExpect(status().isCreated()).andExpect(content().contentType("application/json"));
 
 	}
+	
+	
+	@Test
+	public void insertarAlumnoEmailIncorrectoTest() throws Exception {
+	
+		
+		ObjectNode objectNode = om.createObjectNode();//nuestro alumno
+		objectNode.put("nombre" , "Nacho");
+		objectNode.put("apellido" , "Moreno");
+		objectNode.put("email" , "nachorm.es");
+		objectNode.put("edad" , 15);
+		
+		// serializar este alumno
+		String alumno_json = objectNode.toString();
+
+		mockMvc.perform(post("/alumno/").contentType(MediaType.APPLICATION_JSON).content(alumno_json))
+				.andExpect(status().is4xxClientError());//.andExpect(content().contentType("application/json"));
+
+	}
+	
 	
 	
 	

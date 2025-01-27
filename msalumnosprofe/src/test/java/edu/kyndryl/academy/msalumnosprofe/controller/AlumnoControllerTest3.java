@@ -30,12 +30,12 @@ public class AlumnoControllerTest3 {
 	AlumnoService alumnoService; //es un servicio de mentirijilla--> todo: programar su comportamiento
 
 
-	
+	//Ejemplo de TEST Unitario, Simulando (MOCK) el servicio y por tanto falseando la interacción con la base de datos
 	@Test
 	public void getServicioMockeado() throws Exception {
 		
 		Alumno alumno = new Alumno();
-		alumno.setId(1l);
+		alumno.setId(2l);
 		alumno.setNombre("Juan");
 		alumno.setApellido("Moreno");
 		alumno.setEdad(22);

@@ -19,8 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import com.google.gson.Gson;
-
 import edu.kyndryl.academy.msalumnosprofe.controller.AlumnoController;
 import edu.kyndryl.academy.msalumnosprofe.model.Alumno;
 import edu.kyndryl.academy.msalumnosprofe.model.FraseChiquito;

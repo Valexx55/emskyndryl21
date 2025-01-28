@@ -168,13 +168,14 @@ public class CursosController {
 	
 	//obtenerCursoAlumno: recibo un id de alumno y devuelvo el curso en que está matriculado
 	@GetMapping("/obtener-curso-alumno/{idalumno}") 
-	public ResponseEntity<?> obtenerCursoAlumno(@PathVariable Long idalumno, @RequestHeader Map<String, Serializable> params) 
+	//public ResponseEntity<?> obtenerCursoAlumno(@PathVariable Long idalumno, @RequestHeader Map<String, Serializable> params)
+	public ResponseEntity<?> obtenerCursoAlumno(@PathVariable Long idalumno) 
 	{
 		ResponseEntity<?> responseEntity = null;
 		Optional<Curso> o_curso = null;
 		
 				o_curso =  this.cursoService.obtenerCursoAlumno(idalumno);
-				mostrarCabeceras(params);
+				//mostrarCabeceras(params);
 			
 				if (o_curso.isPresent()) {
 					Curso curso_modificado = o_curso.get();

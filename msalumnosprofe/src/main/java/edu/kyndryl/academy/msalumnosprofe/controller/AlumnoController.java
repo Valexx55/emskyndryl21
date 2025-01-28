@@ -2,9 +2,11 @@ package edu.kyndryl.academy.msalumnosprofe.controller;
 
 
 
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -22,13 +24,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.kyndryl.academy.msalumnosprofe.client.ClienteFeignCurso;
 import edu.kyndryl.academy.msalumnosprofe.model.FraseChiquito;
 import edu.kyndryl.academy.msalumnosprofe.service.AlumnoService;
 import edu.kyndryl.academy.mscomunprofe.entity.Alumno;
+import edu.kyndryl.academy.mscomunprofe.entity.Curso;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 
@@ -56,6 +61,9 @@ public class AlumnoController {
 	
 	@Autowired
 	AlumnoService alumnoService;
+	
+	@Autowired
+	ClienteFeignCurso clienteFeignCurso;
 	
 	@Value("${instancia}")
 	String nombre_instancia;
@@ -255,6 +263,28 @@ public class AlumnoController {
 			
 		return responseEntity;
 	}
+	
+	//obtenerCursoAlumno: recibo un id de alumno y devuelvo el curso en que está matriculado
+		@GetMapping("/obtener-curso-alumno-via-feign/{idalumno}") 
+		public ResponseEntity<?> obtenerCursoAlumnoViaFeign(@PathVariable Long idalumno) 
+		{
+			ResponseEntity<?> responseEntity = null;
+			Optional<Curso> o_curso = null;
+			
+					o_curso =  this.clienteFeignCurso.obtenerCursoAlumno(idalumno);
+					//mostrarCabeceras(params);
+				
+					if (o_curso.isPresent()) {
+						Curso curso_modificado = o_curso.get();
+						responseEntity = ResponseEntity.ok(curso_modificado);
+					} else {
+						// no había un curso con ese ID
+						responseEntity = ResponseEntity.noContent().build();// 204
+					}
+		
+			return responseEntity;
+
+		}
 	
 	
 

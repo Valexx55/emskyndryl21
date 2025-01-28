@@ -120,4 +120,11 @@ public class CursoServiceImp implements CursoService {
 		return opcurso;
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public Optional<Curso> obtenerCursoAlumno(Long idalumno) {
+		
+		return this.cursoRepository.obtenerCursoAlumno(idalumno);
+	}
+
 }

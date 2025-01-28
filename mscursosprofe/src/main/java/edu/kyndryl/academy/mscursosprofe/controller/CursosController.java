@@ -1,8 +1,12 @@
 package edu.kyndryl.academy.mscursosprofe.controller;
 
+import java.io.Serializable;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import org.hibernate.engine.transaction.jta.platform.internal.SynchronizationRegistryBasedSynchronizationStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -143,6 +148,46 @@ public class CursosController {
 		return responseEntity;
 
 	}
+	
+	private void mostrarCabeceras (Map<String, Serializable> params)
+	{
+		Iterator<String> it_claves= params.keySet().iterator();
+		
+		params.entrySet().forEach(entrada-> {
+			System.out.print ("CLAVE " + entrada.getKey()+ " = ");
+			System.out.println("VALOR "+ entrada.getValue());
+		});
+		/*while (it_claves.hasNext())
+		{
+			Serializable s = params.get(it_claves.next());
+			System.out.println("cabecera = " + s);
+		}*/
+	}
+	
+	
+	
+	//obtenerCursoAlumno: recibo un id de alumno y devuelvo el curso en que está matriculado
+	@GetMapping("/obtener-curso-alumno/{idalumno}") 
+	public ResponseEntity<?> obtenerCursoAlumno(@PathVariable Long idalumno, @RequestHeader Map<String, Serializable> params) 
+	{
+		ResponseEntity<?> responseEntity = null;
+		Optional<Curso> o_curso = null;
+		
+				o_curso =  this.cursoService.obtenerCursoAlumno(idalumno);
+				mostrarCabeceras(params);
+			
+				if (o_curso.isPresent()) {
+					Curso curso_modificado = o_curso.get();
+					responseEntity = ResponseEntity.ok(curso_modificado);
+				} else {
+					// no había un curso con ese ID
+					responseEntity = ResponseEntity.noContent().build();// 204
+				}
+	
+		return responseEntity;
+
+	}
+	
 	
 	
 	

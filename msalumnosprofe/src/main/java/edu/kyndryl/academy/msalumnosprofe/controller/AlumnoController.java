@@ -92,8 +92,8 @@ public class AlumnoController {
 	// CONSULTA DE TODOS LOS ALUMNOS
 	//ResponseEntity<Tipo que va en el cuerpo> es la clase que envuelve/representa el mensaje HTTP de Respuesta
 	
-	@GetMapping("/") //GET localhost:8081/alumno
-	//@GetMapping	
+	//@GetMapping("/") //GET localhost:8081/alumno
+	@GetMapping	
 	public ResponseEntity<Iterable<Alumno>> listarAlumnos()
 	{
 		ResponseEntity<Iterable<Alumno>> responseEntity = null;
@@ -167,7 +167,8 @@ public class AlumnoController {
 	}
 	
 	//POST - INSERTAR
-	@PostMapping("/") //POST localhost:8081/alumno
+	//@PostMapping("/") //POST localhost:8081/alumno
+	@PostMapping //POST localhost:8081/alumno
 	public ResponseEntity<?> insertarAlumno(@Valid @RequestBody Alumno alumno, BindingResult br)
 	{
 		ResponseEntity<?> responseEntity = null;

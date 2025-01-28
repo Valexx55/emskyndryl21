@@ -1,5 +1,6 @@
 package edu.kyndryl.academy.mscursosprofe.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.kyndryl.academy.mscomunprofe.entity.Alumno;
 import edu.kyndryl.academy.mscomunprofe.entity.Curso;
 import edu.kyndryl.academy.mscursosprofe.service.CursoService;
 
@@ -81,7 +83,7 @@ public class CursosController {
 					Curso curso_modificado = o_curso.get();
 					responseEntity = ResponseEntity.ok(curso_modificado);
 				} else {
-					// no había un alumno con ese ID
+					// no había un curso con ese ID
 					responseEntity = ResponseEntity.notFound().build();// 404
 				}
 	
@@ -99,5 +101,56 @@ public class CursosController {
 		return responseEntity;
 
 	}
+	
+	
+	@PutMapping("/asignar-alumnos/{idcurso}") // PUT http://localhost:8081/curso/asignar-alumnos/5
+	public ResponseEntity<?> asignarAlumnos(@RequestBody List<Alumno> alumnos, @PathVariable Long idcurso) {
+		ResponseEntity<?> responseEntity = null;
+		Optional<Curso> o_curso = null;
+		
+				o_curso =  this.cursoService.asignarAlumos(alumnos, idcurso);
+			
+				if (o_curso.isPresent()) {
+					Curso curso_modificado = o_curso.get();
+					responseEntity = ResponseEntity.ok(curso_modificado);
+				} else {
+					// no había un curso con ese ID
+					responseEntity = ResponseEntity.notFound().build();// 404
+				}
+	
+		return responseEntity;
+
+	}
+	
+	
+	
+	@PutMapping("/eliminar-alumno/{idcurso}") // PUT http://localhost:8081/curso/eliminar-alumno/5
+	public ResponseEntity<?> eliminarAlumno(@RequestBody Alumno alumno, @PathVariable Long idcurso) {
+		ResponseEntity<?> responseEntity = null;
+		Optional<Curso> o_curso = null;
+		
+				o_curso =  this.cursoService.eliminarAlumno(alumno, idcurso);
+				
+			
+				if (o_curso.isPresent()) {
+					Curso curso_modificado = o_curso.get();
+					responseEntity = ResponseEntity.ok(curso_modificado);
+				} else {
+					// no había un curso con ese ID
+					responseEntity = ResponseEntity.notFound().build();// 404
+				}
+	
+		return responseEntity;
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

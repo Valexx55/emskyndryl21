@@ -1,7 +1,9 @@
 package edu.kyndryl.academy.mscursosprofe.service;
 
+import java.util.List;
 import java.util.Optional;
 
+import edu.kyndryl.academy.mscomunprofe.entity.Alumno;
 import edu.kyndryl.academy.mscomunprofe.entity.Curso;
 
 
@@ -17,5 +19,9 @@ public interface CursoService {
 	public void deleteById (Long id);
 	
 	public Optional<Curso> update (Curso curso, Long id);
+	
+	public Optional<Curso> asignarAlumos (List<Alumno> alumnos, Long idcurso);
+	
+	public Optional<Curso> eliminarAlumno (Alumno alumno, Long idcurso);
 
 }

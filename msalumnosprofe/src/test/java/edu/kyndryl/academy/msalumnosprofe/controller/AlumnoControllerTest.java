@@ -26,7 +26,7 @@ public class AlumnoControllerTest {
 	
 	@Test
 	public void testGetAlumno () {
-		assertThat(this.template.getForObject("http://localhost:"+ port+"/alumno/", String.class)).contains("apellido");
+		assertThat(this.template.getForObject("http://localhost:"+ port+"/alumno", String.class)).contains("apellido");
 	}
 	
 	

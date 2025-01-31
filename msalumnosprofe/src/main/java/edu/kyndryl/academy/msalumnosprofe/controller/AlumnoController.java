@@ -2,11 +2,9 @@ package edu.kyndryl.academy.msalumnosprofe.controller;
 
 
 
-import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -18,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +25,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -54,6 +54,7 @@ import jakarta.validation.Valid;
  * 
  */
 //@Controller //sería si la capa de controller devuelve vistas (HTML, JSP)
+@CrossOrigin(originPatterns = {"*"}, methods = {RequestMethod.GET})
 @RestController//le estoy diciendo que trabajo con JSON - de modo que si yo devuelvo un alumno , Spring automáticamente lo convierte a JSON
 @RequestMapping("/alumno") //especifo que las peticiones a esta clase serán del tipo http://dominio:puerto/alumno
 public class AlumnoController {
@@ -269,7 +270,7 @@ public class AlumnoController {
 		public ResponseEntity<?> obtenerCursoAlumnoViaFeign(@PathVariable Long idalumno) 
 		{
 			ResponseEntity<?> responseEntity = null;
-			Optional<Curso> o_curso = null;
+			Optional<Curso> o_curso = Optional.empty();
 			
 					o_curso =  this.clienteFeignCurso.obtenerCursoAlumno(idalumno);
 					//mostrarCabeceras(params);

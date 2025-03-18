@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
@@ -64,11 +65,36 @@ public class Alumno {
 	//@JsonIgnore //evitando serializar este atributo a JSON
 	private LocalDateTime creadoEn;
 	
+	@Lob//asociamos la columna de la foto a la bd
+	@JsonIgnore //evitando serializar este atributo a JSON
+	private byte[] foto;
+		
+	public byte[] getFoto() {
+		return foto;
+	}
+
+	public void setFoto(byte[] foto) {
+		this.foto = foto;
+	}
+	
+	//introducimos un flag que indica si este alumno tiene foto o no
+	public Integer getFotoHashCode()
+	{
+		Integer flag = null;
+		
+			flag = (this.foto!=null) ? this.foto.hashCode() : null;
+		
+		return flag;
+	}
+	
 	@PrePersist //esta anotación hace que Spring llame a este método antes de insertar un nuevo alumno
 	private void generarFechaCreacion ()
 	{
 		this.creadoEn = LocalDateTime.now(); //obtengo la fecha actual y se la asigno al alumno
 	}
+	
+
+
 
 	public Long getId() {
 		return id;

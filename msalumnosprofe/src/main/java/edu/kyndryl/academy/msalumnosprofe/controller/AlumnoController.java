@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -365,5 +366,32 @@ public class AlumnoController {
 		return responseEntity;
 
 	}
+	
+	
+	@GetMapping("/pagina") //GET /pagina?page=1&size=3&sort=edad,ASC
+	public ResponseEntity<Iterable<Alumno>> listarAlumnosPorPagina(Pageable pageable) {
+		ResponseEntity<Iterable<Alumno>> responseEntity = null;
+
+		logger.debug("listarAlumnosPorPagina");
+			
+
+		Iterable<Alumno> listadoAlumnos = alumnoService.consultarAlumnosPorPagina(pageable);
+		responseEntity = ResponseEntity.ok(listadoAlumnos);
+		logger.debug("Listado de alumnos por página " + listadoAlumnos.toString());
+
+		return responseEntity;
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

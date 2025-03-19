@@ -1,6 +1,9 @@
 package edu.kyndryl.academy.msalumnosprofe.service;
 
+
 import java.util.Optional;
+
+import org.springframework.data.domain.Pageable;
 
 import edu.kyndryl.academy.msalumnosprofe.model.FraseChiquito;
 import edu.kyndryl.academy.mscomunprofe.entity.Alumno;
@@ -25,6 +28,9 @@ public interface AlumnoService {
 	Iterable<Alumno> buscarAlumnosPorIntervaloDeEdad (int edadmin, int edadmax);
 	//OBTENER FRASE CHIQUITO DE OTRO SERVER
 	Optional<FraseChiquito> obtenerFraseAleatoria ();
+	//obtenerAlumnosPorPagina
+	Iterable<Alumno> consultarAlumnosPorPagina (Pageable pageable);
+	
 	
 
 }

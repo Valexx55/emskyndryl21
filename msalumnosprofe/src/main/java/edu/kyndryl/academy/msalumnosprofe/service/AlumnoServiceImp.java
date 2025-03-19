@@ -1,5 +1,6 @@
 package edu.kyndryl.academy.msalumnosprofe.service;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -23,6 +25,7 @@ import org.springframework.web.client.RestTemplate;
 import edu.kyndryl.academy.msalumnosprofe.controller.AlumnoController;
 import edu.kyndryl.academy.msalumnosprofe.model.FraseChiquito;
 import edu.kyndryl.academy.msalumnosprofe.repository.AlumnoRepository;
+import edu.kyndryl.academy.msalumnosprofe.repository.AlumnoRepositoryPage;
 import edu.kyndryl.academy.mscomunprofe.entity.Alumno;
 
 /**
@@ -58,6 +61,9 @@ public class AlumnoServiceImp implements AlumnoService {
 	
 	@Autowired
 	AlumnoRepository alumnoRepository;
+	
+	@Autowired
+	AlumnoRepositoryPage alumnoRepositoryPage;
 
 	@Override
 	@Transactional
@@ -130,6 +136,14 @@ public class AlumnoServiceImp implements AlumnoService {
 			
 		
 		return oFrase;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Iterable<Alumno> consultarAlumnosPorPagina(Pageable pageable) {
+		
+		return this.alumnoRepositoryPage.findAll(pageable);
+		
 	}
 
 }

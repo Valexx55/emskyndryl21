@@ -276,6 +276,39 @@ public class AlumnoController {
 		return responseEntity;
 	}
 	
+	
+	@PutMapping("/editar-con-foto/{id}") // PUT localhost:8081/alumno/3
+	public ResponseEntity<Alumno> modificarAlumnoConFoto(Alumno alumno, MultipartFile archivo  ,@PathVariable Long id) throws IOException {
+		ResponseEntity<Alumno> responseEntity = null;
+		Alumno alumnoModificado = null;
+
+		logger.debug("EN modificarAlumno()");
+		if (!archivo.isEmpty())
+		{
+			try {
+				alumno.setFoto(archivo.getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				logger.error("Error al tratar el archivo adjunto", e);
+				throw e;
+			}
+		}
+		Optional<Alumno> oAlumno = alumnoService.modificarAlumnoPorId(alumno, id);
+		if (oAlumno.isPresent()) {
+			alumnoModificado = oAlumno.get();
+			responseEntity = ResponseEntity.ok(alumnoModificado);
+			logger.debug("Alumno leído " + alumnoModificado);
+		} else {
+			logger.debug("Alumno no encontrado con id " + id);
+			responseEntity = ResponseEntity.notFound().build();
+		}
+
+		return responseEntity;
+	}
+	
+	
+	
+	
 	//GET FOTO id --> foto
 
 	@GetMapping("/listarAlumnosPorRangoEdad") // GET localhost:8081/alumno?edadmin=10&edadmax=20

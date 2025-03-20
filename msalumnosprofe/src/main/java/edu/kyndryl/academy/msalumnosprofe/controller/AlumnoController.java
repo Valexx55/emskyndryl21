@@ -325,6 +325,21 @@ public class AlumnoController {
 
 		return responseEntity;
 	}
+	
+	@GetMapping("/listarAlumnosPorRangoEdadPaginado") // GET localhost:8081/listarAlumnosPorRangoEdadPaginado?edadmin=10&edadmax=20&page=0&size=2
+	public ResponseEntity<Iterable<Alumno>> listarAlumnosPorRangoEdadPaginado(
+			@RequestParam(name = "edadmin", required = true) int edadmin,
+			@RequestParam(name = "edadmax", required = true) int edadmax,
+			Pageable pageable) {
+		ResponseEntity<Iterable<Alumno>> responseEntity = null;
+
+		logger.debug("EN listarAlumnosPorRangoEdad()");
+		Iterable<Alumno> listadoAlumnos = alumnoService.findByEdadBetween(edadmin, edadmax, pageable);
+		responseEntity = ResponseEntity.ok(listadoAlumnos);
+		logger.debug("listado alumnos " + listadoAlumnos);
+
+		return responseEntity;
+	}
 
 	@GetMapping("/obtenerFraseChiquito") // GET localhost:8081/alumno/obtenerFraseChiquito
 	public ResponseEntity<FraseChiquito> obtenerFraseChiquito() {

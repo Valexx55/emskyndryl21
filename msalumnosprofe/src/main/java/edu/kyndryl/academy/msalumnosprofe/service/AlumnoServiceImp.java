@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -144,6 +145,11 @@ public class AlumnoServiceImp implements AlumnoService {
 		
 		return this.alumnoRepositoryPage.findAll(pageable);
 		
+	}
+
+	@Override
+	public Iterable<Alumno> findByEdadBetween(int edadmin, int edadmax, Pageable pageable) {
+		return this.alumnoRepositoryPage.findByEdadBetween(edadmin, edadmax, pageable);
 	}
 
 }

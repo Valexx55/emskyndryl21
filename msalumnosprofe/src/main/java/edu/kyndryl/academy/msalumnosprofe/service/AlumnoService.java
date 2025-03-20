@@ -30,6 +30,8 @@ public interface AlumnoService {
 	Optional<FraseChiquito> obtenerFraseAleatoria ();
 	//obtenerAlumnosPorPagina
 	Iterable<Alumno> consultarAlumnosPorPagina (Pageable pageable);
+	//obtenerAlumnosPorPagina con filtro de edad
+	Iterable<Alumno> findByEdadBetween (int edadmin, int edadmax, Pageable pageable);
 	
 	
 

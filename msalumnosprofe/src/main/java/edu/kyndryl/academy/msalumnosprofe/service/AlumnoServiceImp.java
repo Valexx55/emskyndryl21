@@ -91,7 +91,13 @@ public class AlumnoServiceImp implements AlumnoService {
 				//2 modificamos
 				Alumno alumnoleido = oa.get();//está en estado Persistente si modifico un atributo dle objeto, estoy modificando también la columna / el registro de la bd JPA
 				// alumnoleido.setNombre(alumno.getNombre());
-				BeanUtils.copyProperties(alumno, alumnoleido, "id", "creadoEn");//propiedades que se ignoran no se copian
+				if (alumno.getFoto()!=null)
+				{
+					BeanUtils.copyProperties(alumno, alumnoleido, "id", "creadoEn");//propiedades que se ignoran no se copian
+				} else {
+					BeanUtils.copyProperties(alumno, alumnoleido, "id", "creadoEn", "foto");//propiedades que se ignoran no se copian
+				}
+				
 				//3 guardamos es implícto
 				//this.alumnoRepository.save(alumnoleido);
 				oa = Optional.of(alumnoleido); 

@@ -39,6 +39,7 @@ import edu.kyndryl.academy.msalumnosprofe.service.AlumnoService;
 import edu.kyndryl.academy.mscomunprofe.entity.Alumno;
 import edu.kyndryl.academy.mscomunprofe.entity.Curso;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 
 /**
@@ -69,12 +70,22 @@ public class AlumnoController {
 
 	@Value("${instancia}")
 	String nombre_instancia;
+	
+	@Value("${mientorno}")
+	String mientorno;
 
 	@Autowired
 	Environment environment;
 
 	Logger logger = LoggerFactory.getLogger(AlumnoController.class);// dame un log para esta clase
 
+	
+	@PostConstruct
+	public void postCreacion ()
+	{
+		logger.debug("EN POST CONSTRUCT " + mientorno);
+	}
+	
 	// yo a Spring le digo oye: si recibes un GET
 	// localhost:8081/alumno/obtener-alumno-test
 	// invocas a este método

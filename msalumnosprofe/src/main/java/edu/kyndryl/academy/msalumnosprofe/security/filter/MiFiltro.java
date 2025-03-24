@@ -28,12 +28,12 @@ public class MiFiltro implements Filter {
 		//le dejo pasar
 		//obtener la cabecera de Autorización
 		HttpServletRequest hr = (HttpServletRequest) request;
-		String cadenaauth =  hr.getHeader("Authorization");
+		/*String cadenaauth =  hr.getHeader("Authorization");
 		System.out.println(cadenaauth);
 		//Basic YWRtaW46YWRtaW4=
 		byte[] decodeData =  Base64.getDecoder().decode(cadenaauth.substring(6));//.toString();
 		String cadenadesc = new String(decodeData, StandardCharsets.UTF_8);
-		System.out.println(cadenadesc);
+		System.out.println(cadenadesc);*/
 		
 		chain.doFilter(request, response);
 		

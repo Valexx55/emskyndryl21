@@ -27,7 +27,15 @@ public class UserDetailImpl implements UserDetails {
 			//hacemos una equivalencia entre Rol Y Autoridad
 			this.usuario.getRoles().forEach(
 					rol -> {
-						authorities.add(new SimpleGrantedAuthority(rol.getTipRol().toString()));
+						//TODO revisar el apaño
+						String strRol = null;
+						if (rol.getId()==1l)
+						{
+							strRol = "ROLE_ADMIN";
+						} else {
+							strRol = "ROLE_USER";
+						}
+						authorities.add(new SimpleGrantedAuthority(strRol));
 					}
 					);
 		

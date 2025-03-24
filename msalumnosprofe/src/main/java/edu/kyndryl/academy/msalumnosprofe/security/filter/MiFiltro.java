@@ -1,6 +1,7 @@
 package edu.kyndryl.academy.msalumnosprofe.security.filter;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +30,9 @@ public class MiFiltro implements Filter {
 		HttpServletRequest hr = (HttpServletRequest) request;
 		String cadenaauth =  hr.getHeader("Authorization");
 		System.out.println(cadenaauth);
-		String cadenadesc =  Base64.getDecoder().decode(cadenaauth).toString();
+		//Basic YWRtaW46YWRtaW4=
+		byte[] decodeData =  Base64.getDecoder().decode(cadenaauth.substring(6));//.toString();
+		String cadenadesc = new String(decodeData, StandardCharsets.UTF_8);
 		System.out.println(cadenadesc);
 		
 		chain.doFilter(request, response);

@@ -42,8 +42,10 @@ public class TokenUtil {
 	{
 		String tokenNuevo = null;
 		
-			long tiempo_expiracion = duracion * 1000;
+			long tiempo_expiracion = duracion;// * 1000;
 			Date fecha_expiracion = new Date(System.currentTimeMillis()+  tiempo_expiracion);
+			
+			log.debug("FECHA DE CADUCIDAD "  + fecha_expiracion);
 			
 			Map<String, Object> extra = new HashMap<>();
 			extra.put("nombre", nombre);

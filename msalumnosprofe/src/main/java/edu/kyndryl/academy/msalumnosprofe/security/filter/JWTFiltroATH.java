@@ -73,7 +73,10 @@ public class JWTFiltroATH extends UsernamePasswordAuthenticationFilter  {
 		//CREAR EL TOKEN
 		String tokenNuevo =  this.tokenUtil.crearToken(userdetail.getNombre(), userdetail.getUsername(), userdetail.getAuthorities());
 		//lo incluimos en la cabacera de la respuesta, de donde lo sacara el cliente
+		
 		response.addHeader("Authorization", "Bearer "+ tokenNuevo);
+		response.setHeader("Access-Control-Expose-Headers", "Authorization");//permito que se acceda desde js por el cliente a esta cabecera CORS
+		//response.setHeader("Access-Control-Expose-Headers", "*");//permito que se acceda desde js por el cliente a esta cabecera CORS
 		response.getWriter().flush();
 		
 		super.successfulAuthentication(request, response, chain, authResult);

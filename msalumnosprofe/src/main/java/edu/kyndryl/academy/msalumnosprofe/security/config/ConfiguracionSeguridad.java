@@ -11,6 +11,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -56,7 +57,9 @@ public class ConfiguracionSeguridad {
 		
 		return httpSecurity.csrf(c -> c.disable()).authorizeHttpRequests
 			(auth -> auth.requestMatchers(HttpMethod.POST).hasAnyRole("ADMIN")
-				.requestMatchers("/alumno/**").authenticated())
+					//.requestMatchers("/alumno/obtenerFoto/**").anonymous()//TODO resolver la obtención de fotos sin autenticación Ó hacer la petición desde un serivicio y no desde img
+				.requestMatchers("/alumno/**").authenticated()
+				)
 				.httpBasic(Customizer.withDefaults()).build();
 		
 	}
@@ -115,6 +118,15 @@ public class ConfiguracionSeguridad {
 				.addFilterBefore(jAtz, UsernamePasswordAuthenticationFilter.class)
 				.build();
 		
+	}
+	
+	//para configuraciones a nivel global, más prioridad, más para recursos vs HttpSecurity configuraciones a nivel de path
+	@Bean
+	@Profile({"prod"})
+	public WebSecurityCustomizer webSecurityCustomizer() {
+	    return web -> web
+	        .ignoring()
+	        .requestMatchers("/alumno/obtenerFoto/**");
 	}
 	
 	/*public static void main(String[] args) {

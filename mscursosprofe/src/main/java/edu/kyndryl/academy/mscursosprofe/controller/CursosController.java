@@ -8,7 +8,12 @@ import java.util.Optional;
 
 import org.hibernate.engine.transaction.jta.platform.internal.SynchronizationRegistryBasedSynchronizationStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.reactive.HttpHandlerAutoConfiguration;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,10 +24,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import edu.kyndryl.academy.mscomunprofe.entity.Alumno;
+import edu.kyndryl.academy.mscomunprofe.entity.CredencialesAutenticacion;
 import edu.kyndryl.academy.mscomunprofe.entity.Curso;
 import edu.kyndryl.academy.mscursosprofe.service.CursoService;
+import jakarta.annotation.PostConstruct;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/curso")//LE DECIMOS a Spring/Tomcat lo que venga con /curso es para esta clase
@@ -31,6 +41,51 @@ public class CursosController {
 	@Autowired
 	CursoService cursoService;
 	
+	CredencialesAutenticacion cAutenticacion;
+	
+	String tokenAuth;
+	
+	//generamos método que acceda a los microservicios de alumno
+	
+	@PostConstruct
+	private void init ()
+	{
+		CredencialesAutenticacion ca = new CredencialesAutenticacion("val", "val"); //TODO mejora indicar como properties estas credenciales
+		getAuth(ca).subscribe((String token) -> {
+			System.out.println("TOKEN RX =  " + token) ;
+			this.tokenAuth = token;
+		});
+		
+	}
+	
+	private Mono<String> getAuth (CredencialesAutenticacion ca)
+	{
+		//post login vamos a consumir este post de manera reactiva
+		return WebClient
+			.create("http://localhost:8082")
+			.post()
+			.uri("/alumno/login")
+			.contentType(MediaType.APPLICATION_JSON)
+			.bodyValue(ca)
+			.exchangeToMono(a -> {
+				return Mono.just(a.headers().header("Authorization").get(0));
+			});
+	}
+	
+	@GetMapping("/obtenerAlumnoViaCurso")
+   public Alumno obtenerAlumnoViaCurso ()
+   {
+		Alumno alumno;
+		
+		String token_local = getAuth(new CredencialesAutenticacion("val", "val")).block();//espero a tener la respuesta
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", "Bearer " + token_local);
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<Alumno> rea = restTemplate.exchange("http://localhost:8082/alumno/1", HttpMethod.GET,new HttpEntity<>("parameters", headers)  ,Alumno.class);
+		alumno =  rea.getBody();
+		
+		return alumno;
+   }
 	
 	@GetMapping // GET http://localhost:8081/curso
 	public ResponseEntity<?> listarCursos() {

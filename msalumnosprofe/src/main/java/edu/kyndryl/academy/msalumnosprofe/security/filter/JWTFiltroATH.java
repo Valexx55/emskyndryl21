@@ -15,9 +15,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import edu.kyndryl.academy.msalumnosprofe.security.model.CredencialesAutenticacion;
 import edu.kyndryl.academy.msalumnosprofe.security.model.UserDetailImpl;
 import edu.kyndryl.academy.msalumnosprofe.security.service.TokenUtil;
+import edu.kyndryl.academy.mscomunprofe.entity.CredencialesAutenticacion;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

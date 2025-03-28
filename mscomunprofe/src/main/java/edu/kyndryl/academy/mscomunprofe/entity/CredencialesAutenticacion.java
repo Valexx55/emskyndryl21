@@ -1,4 +1,4 @@
-package edu.kyndryl.academy.msalumnosprofe.security.model;
+package edu.kyndryl.academy.mscomunprofe.entity;
 
 //clase de DATOS
 

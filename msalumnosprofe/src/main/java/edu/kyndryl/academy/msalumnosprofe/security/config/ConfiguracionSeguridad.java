@@ -126,6 +126,7 @@ public class ConfiguracionSeguridad {
 	public WebSecurityCustomizer webSecurityCustomizer() {
 	    return web -> web
 	        .ignoring()
+	        //.requestMatchers("/alumno/**");//sólo para demostrar el caso correcto de test integral en el servidor
 	        .requestMatchers("/alumno/obtenerFoto/**");
 	}
 	

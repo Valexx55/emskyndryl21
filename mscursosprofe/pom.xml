@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>edu.kyndryl.academy</groupId>
 	<artifactId>mscursosprofe</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2</version>
 	<name>mscursosprofe</name>
 	<description>MicroServicio para la gestión de cursos</description>
 	<url />

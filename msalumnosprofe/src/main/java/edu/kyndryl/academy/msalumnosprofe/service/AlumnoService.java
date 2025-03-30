@@ -5,8 +5,8 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 
-import edu.kyndryl.academy.msalumnosprofe.model.FraseChiquito;
 import edu.kyndryl.academy.mscomunprofe.entity.Alumno;
+import edu.kyndryl.academy.mscomunprofe.entity.FraseChiquito;
 
 /**
  * Aquí quedan definidos de manera abstracta (sólo la cabecera de los métodos)

@@ -24,10 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import edu.kyndryl.academy.msalumnosprofe.controller.AlumnoController;
-import edu.kyndryl.academy.msalumnosprofe.model.FraseChiquito;
 import edu.kyndryl.academy.msalumnosprofe.repository.AlumnoRepository;
 import edu.kyndryl.academy.msalumnosprofe.repository.AlumnoRepositoryPage;
 import edu.kyndryl.academy.mscomunprofe.entity.Alumno;
+import edu.kyndryl.academy.mscomunprofe.entity.FraseChiquito;
 
 /**
  * En esta clase, contiene la lógica de negocio

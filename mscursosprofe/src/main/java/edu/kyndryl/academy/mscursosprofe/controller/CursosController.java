@@ -53,6 +53,10 @@ public class CursosController {
 	
 	//generamos método que acceda a los microservicios de alumno
 	
+	/**
+	 * Nos autenticamos al inicio contra el microsevicio de cursos
+	 * podríamos usar las credenciales almacendas con {@value}
+	 */
 	@PostConstruct
 	private void init ()
 	{
@@ -78,6 +82,12 @@ public class CursosController {
 			});
 	}
 	
+	
+	
+	/**
+	 * Obtenemos un alumno del microservicio de alumnnos, autenticándonos
+	 * @return El alumno obtenido
+	 */
 	@GetMapping("/obtenerAlumnoViaCurso")
    public Alumno obtenerAlumnoViaCurso ()
    {

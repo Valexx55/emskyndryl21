@@ -34,10 +34,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import edu.kyndryl.academy.msalumnosprofe.client.ClienteFeignCurso;
-import edu.kyndryl.academy.msalumnosprofe.model.FraseChiquito;
 import edu.kyndryl.academy.msalumnosprofe.service.AlumnoService;
 import edu.kyndryl.academy.mscomunprofe.entity.Alumno;
 import edu.kyndryl.academy.mscomunprofe.entity.Curso;
+import edu.kyndryl.academy.mscomunprofe.entity.FraseChiquito;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;

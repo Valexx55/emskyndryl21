@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import org.hibernate.engine.transaction.jta.platform.internal.SynchronizationRegistryBasedSynchronizationStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 import edu.kyndryl.academy.mscomunprofe.entity.Alumno;
 import edu.kyndryl.academy.mscomunprofe.entity.CredencialesAutenticacion;
 import edu.kyndryl.academy.mscomunprofe.entity.Curso;
+import edu.kyndryl.academy.mscomunprofe.entity.FraseChiquito;
 import edu.kyndryl.academy.mscursosprofe.service.CursoService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import jakarta.annotation.PostConstruct;
 import reactor.core.publisher.Mono;
 
@@ -47,6 +53,10 @@ public class CursosController {
 	
 	//generamos método que acceda a los microservicios de alumno
 	
+	/**
+	 * Nos autenticamos al inicio contra el microsevicio de cursos
+	 * podríamos usar las credenciales almacendas con {@value}
+	 */
 	@PostConstruct
 	private void init ()
 	{
@@ -72,6 +82,12 @@ public class CursosController {
 			});
 	}
 	
+	
+	
+	/**
+	 * Obtenemos un alumno del microservicio de alumnnos, autenticándonos
+	 * @return El alumno obtenido
+	 */
 	@GetMapping("/obtenerAlumnoViaCurso")
    public Alumno obtenerAlumnoViaCurso ()
    {
@@ -86,6 +102,145 @@ public class CursosController {
 		
 		return alumno;
    }
+	
+	/*******************************************
+	 *******************************************
+	 
+	 		MÉTODOS DE RESLIENCIA
+	 
+	 *******************************************
+	 *******************************************
+	 */
+	
+	
+	@GetMapping("/obtenerAlumnoCB")
+	@CircuitBreaker (name = "CircuitBreakerDemoService", fallbackMethod = "getErrorCircuit")
+	public Alumno obtenerAlumnoCB () {
+		Alumno a = null;
+			
+		 	HttpHeaders headers = new HttpHeaders();
+		    headers.add("Authorization", "Bearer "+this.tokenAuth);
+		    RestTemplate rt = new RestTemplate();
+		    ResponseEntity<Alumno> ra = rt.exchange(
+		            "http://localhost:8082/alumno/1",
+		            HttpMethod.GET,
+		            new HttpEntity<>("parameters", headers),
+		            Alumno.class
+		    ); 
+			a = ra.getBody();
+			
+		return a;
+	}
+	
+	public Alumno getErrorCircuit(Throwable throwable)
+	{
+		return new Alumno("Alumno", 69, "Fallo", "alumnnofallo@kyndryl.com");
+	}
+	
+	@GetMapping("/obtenerListadoCursosRT")
+	@RateLimiter(name = "mitasalimite", fallbackMethod = "listadoCursosPorDefecto" )
+	public Iterable<Curso> obtenerListadoCursosRT () {
+		Iterable<Curso> listaCursos = null;
+		
+			System.out.println("mitasalimite");
+			listaCursos =  cursoService.findAll();
+		            
+			
+		return listaCursos;
+	}
+	
+	public Iterable<Curso> listadoCursosPorDefecto (Throwable t){
+		Iterable<Curso> listado_cursos = null;
+
+			listado_cursos = this.cursoService.findAll();
+			listado_cursos = List.of(new Curso(1l, "TikTok"));
+
+		return listado_cursos;
+
+	}
+	
+	
+	@GetMapping("/obtenerFraseChiquitoTL")
+	@TimeLimiter(name = "chiquito", fallbackMethod = "fraseChiquitoPorDefecto" )
+	public CompletableFuture<FraseChiquito> obtenerFraseChiquitoTL () {
+		CompletableFuture<FraseChiquito> cf = null;
+		
+		System.out.println("En chiquito");
+		
+		cf = CompletableFuture.supplyAsync(() -> {
+			HttpHeaders headers = new HttpHeaders();
+			FraseChiquito f = null;
+		 	try {
+		 		//Thread.sleep(5000);//fallo
+		 		headers.add("Authorization", "Bearer "+this.tokenAuth);
+			    RestTemplate rt = new RestTemplate();
+			    ResponseEntity<FraseChiquito> ra = rt.exchange(
+			            "http://localhost:8082/alumno/obtenerFraseChiquito",
+			            HttpMethod.GET,
+			            new HttpEntity<>("parameters", headers),
+			            FraseChiquito.class
+			    ); 
+				f = ra.getBody();
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
+		 	return f;
+		});
+	
+	return cf;
+	}
+	
+	
+	private CompletableFuture<FraseChiquito> fraseChiquitoPorDefecto(Throwable e) {
+		CompletableFuture<FraseChiquito> cf = null;
+
+			cf = CompletableFuture.supplyAsync(() -> new FraseChiquito(1, "Te da cuen?"));
+			
+		return cf;
+
+	}
+	
+	@GetMapping("/obtenerAlumnoRetry")
+	@Retry(name = "retryApiDemo", fallbackMethod = "getErrorCircuitRetry")
+	public Alumno obtenerAlumnoRetry () {
+		Alumno a = null;
+		
+			System.out.println("En retry ");
+		
+			HttpHeaders headers = new HttpHeaders();
+		            
+		    headers.add("Authorization", "Bearer "+this.tokenAuth);
+		    RestTemplate rt = new RestTemplate();
+		    ResponseEntity<Alumno> ra = rt.exchange(
+		            "http://localhost:8082/alumno/1",
+		            HttpMethod.GET,
+		            new HttpEntity<>("parameters", headers),
+		            Alumno.class
+		    ); 
+			a = ra.getBody();
+			
+			
+		return a;
+	}
+	
+	public Alumno getErrorCircuitRetry(Throwable throwable)
+	{
+		System.out.println("En retry default ");
+		return new Alumno("Alumno", 69, "Fallo", "alumnnofallo@kyndryl.com");
+	}
+	
+	/*******************************************
+	 *******************************************
+	 			    FIN
+	 		MÉTODOS DE RESLIENCIA
+	 
+	 *******************************************
+	 *******************************************
+	 */
+	
+	
+	
+	
 	
 	@GetMapping // GET http://localhost:8081/curso
 	public ResponseEntity<?> listarCursos() {

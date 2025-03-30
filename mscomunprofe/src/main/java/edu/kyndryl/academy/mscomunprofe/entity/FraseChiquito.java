@@ -1,4 +1,4 @@
-package edu.kyndryl.academy.msalumnosprofe.model;
+package edu.kyndryl.academy.mscomunprofe.entity;
 
 public class FraseChiquito {
 	

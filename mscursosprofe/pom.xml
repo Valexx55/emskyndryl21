@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>edu.kyndryl.academy</groupId>
 	<artifactId>mscursosprofe</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.3</version>
 	<name>mscursosprofe</name>
 	<description>MicroServicio para la gestión de cursos</description>
 	<url />
@@ -35,7 +35,7 @@
 		<dependency>
 			<groupId>edu.kyndryl.academy</groupId>
 			<artifactId>mscomunprofe</artifactId>
-			<version>0.0.2</version>
+			<version>0.0.3</version>
 		</dependency>
 		<!--<dependency>
 			<groupId>org.springframework.boot</groupId>

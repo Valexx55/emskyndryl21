@@ -9,6 +9,7 @@ import java.util.concurrent.CompletableFuture;
 
 import org.hibernate.engine.transaction.jta.platform.internal.SynchronizationRegistryBasedSynchronizationStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.web.reactive.HttpHandlerAutoConfiguration;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -51,6 +52,9 @@ public class CursosController {
 	
 	String tokenAuth;
 	
+	@Value("${mscursos}")
+	String ipmscursos;
+	
 	//generamos método que acceda a los microservicios de alumno
 	
 	/**
@@ -72,7 +76,7 @@ public class CursosController {
 	{
 		//post login vamos a consumir este post de manera reactiva
 		return WebClient
-			.create("http://localhost:8082")
+			.create("http://"+ipmscursos+":8082")
 			.post()
 			.uri("/alumno/login")
 			.contentType(MediaType.APPLICATION_JSON)
@@ -97,7 +101,7 @@ public class CursosController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", "Bearer " + token_local);
 		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<Alumno> rea = restTemplate.exchange("http://localhost:8082/alumno/1", HttpMethod.GET,new HttpEntity<>("parameters", headers)  ,Alumno.class);
+		ResponseEntity<Alumno> rea = restTemplate.exchange("http://"+ipmscursos+":8082/alumno/1", HttpMethod.GET,new HttpEntity<>("parameters", headers)  ,Alumno.class);
 		alumno =  rea.getBody();
 		
 		return alumno;
@@ -118,11 +122,12 @@ public class CursosController {
 	public Alumno obtenerAlumnoCB () {
 		Alumno a = null;
 			
+			this.tokenAuth = getAuth(new CredencialesAutenticacion("val", "val")).block();//espero a tener la respuesta
 		 	HttpHeaders headers = new HttpHeaders();
 		    headers.add("Authorization", "Bearer "+this.tokenAuth);
 		    RestTemplate rt = new RestTemplate();
 		    ResponseEntity<Alumno> ra = rt.exchange(
-		            "http://localhost:8082/alumno/1",
+		            "http://"+ipmscursos+":8082/alumno/1",
 		            HttpMethod.GET,
 		            new HttpEntity<>("parameters", headers),
 		            Alumno.class
@@ -172,10 +177,11 @@ public class CursosController {
 			FraseChiquito f = null;
 		 	try {
 		 		//Thread.sleep(5000);//fallo
+		 		this.tokenAuth = getAuth(new CredencialesAutenticacion("val", "val")).block();//espero a tener la respuesta
 		 		headers.add("Authorization", "Bearer "+this.tokenAuth);
 			    RestTemplate rt = new RestTemplate();
 			    ResponseEntity<FraseChiquito> ra = rt.exchange(
-			            "http://localhost:8082/alumno/obtenerFraseChiquito",
+			            "http://"+ipmscursos+":8082/alumno/obtenerFraseChiquito",
 			            HttpMethod.GET,
 			            new HttpEntity<>("parameters", headers),
 			            FraseChiquito.class
@@ -209,10 +215,11 @@ public class CursosController {
 		
 			HttpHeaders headers = new HttpHeaders();
 		            
+			this.tokenAuth = getAuth(new CredencialesAutenticacion("val", "val")).block();//espero a tener la respuesta
 		    headers.add("Authorization", "Bearer "+this.tokenAuth);
 		    RestTemplate rt = new RestTemplate();
 		    ResponseEntity<Alumno> ra = rt.exchange(
-		            "http://localhost:8082/alumno/1",
+		            "http://"+ipmscursos+":8082/alumno/1",
 		            HttpMethod.GET,
 		            new HttpEntity<>("parameters", headers),
 		            Alumno.class

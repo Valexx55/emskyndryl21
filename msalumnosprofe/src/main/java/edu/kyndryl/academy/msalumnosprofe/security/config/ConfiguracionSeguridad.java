@@ -111,7 +111,11 @@ public class ConfiguracionSeguridad {
 		return httpSecurity.csrf(c -> c.disable()).authenticationManager(am)
 				.authorizeHttpRequests
 			(auth -> auth.requestMatchers(HttpMethod.POST).hasAnyRole("ADMIN")
-				.requestMatchers("/alumno/**").authenticated())
+				.requestMatchers("/alumno/**").authenticated()
+				//.requestMatchers("/swagger-ui/**").permitAll()
+				//.requestMatchers("/v3/api-docs*/**").permitAll()
+				//.requestMatchers("/swagger-ui.html").permitAll()
+				)
 				.httpBasic(Customizer.withDefaults())
 				.sessionManagement(sesion-> sesion.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.addFilter(jAth)
@@ -127,7 +131,7 @@ public class ConfiguracionSeguridad {
 	    return web -> web
 	        .ignoring()
 	        //.requestMatchers("/alumno/**");//sólo para demostrar el caso correcto de test integral en el servidor
-	        .requestMatchers("/alumno/obtenerFoto/**");
+	        .requestMatchers("/alumno/obtenerFoto/**", "/swagger-ui/**", "/v3/api-docs*/**", "/swagger-ui.html");
 	}
 	
 	/*public static void main(String[] args) {
